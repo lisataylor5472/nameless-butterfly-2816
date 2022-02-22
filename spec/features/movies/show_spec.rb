@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Movie do
-  describe 'User story 2' do
+  describe 'User story 2 / User Story 3' do
     before :each do
       @studio_1 = Studio.create!({name: 'Universal Studios', location: 'Hollywood'})
       @studio_2 = Studio.create!({name: 'Lucas Films', location: 'Hollywood'})
@@ -11,6 +11,7 @@ RSpec.describe Movie do
       @actor_1 = Actor.create!({name: 'Harrison Ford', age: 78})
       @actor_2 = Actor.create!({name: 'Karen Allen', age: 56})
       @actor_3 = Actor.create!({name: 'Alfred Molina', age: 65})
+      @actor_4 = Actor.create!({name: 'John Rhys Davies', age: 82})
       @cast_1 = MovieActor.create!({movie_id: @movie_1.id, actor_id: @actor_1.id})
       @cast_2 = MovieActor.create!({movie_id: @movie_1.id, actor_id: @actor_2.id})
       @cast_3 = MovieActor.create!({movie_id: @movie_1.id, actor_id: @actor_3.id})
@@ -27,8 +28,7 @@ RSpec.describe Movie do
     it 'movies show page - actors sorted from youngest to oldest with average' do
       visit "/movies/#{@movie_1.id}"
       expect(page).to have_content(@movie_1.actors.avg_age)
-      save_and_open_page
-      
+
       within('#actor-0') do
         expect(page).to have_content(@actor_2.name)
       end
@@ -40,6 +40,16 @@ RSpec.describe Movie do
       within("#actor-2")do
         expect(page).to have_content(@actor_1.name)
       end
+    end
+
+    it 'movies show page - form to add actor' do
+      visit "/movies/#{@movie_1.id}"
+      expect(page).to_not have_content(@actor_4.name)
+
+      fill_in 'Name', with: 'John Rhys Davies'
+      click_button 'Submit'
+
+      expect(page).to have_content(@actor_4.name)
     end
   end
 end

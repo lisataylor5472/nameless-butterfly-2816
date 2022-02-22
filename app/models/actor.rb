@@ -3,6 +3,6 @@ class Actor < ApplicationRecord
   has_many :movies, through: :movie_actors
 
   def self.avg_age
-    average(:age)
+    Actor.average(:age)
   end
 end
