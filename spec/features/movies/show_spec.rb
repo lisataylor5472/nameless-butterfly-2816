@@ -26,20 +26,20 @@ RSpec.describe Movie do
 
     it 'movies show page - actors sorted from youngest to oldest with average' do
       visit "/movies/#{@movie_1.id}"
-
-      within("#actor-1") do
+      expect(page).to have_content(@movie_1.actors.avg_age)
+      save_and_open_page
+      
+      within('#actor-0') do
         expect(page).to have_content(@actor_2.name)
       end
 
-      within("#actor-2") do
+      within("#actor-1") do
         expect(page).to have_content(@actor_3.name)
       end
 
-      within("#actor-3")do
+      within("#actor-2")do
         expect(page).to have_content(@actor_1.name)
       end
-
-      expect(page).to have_content(@movie_1.avg_actor_age)
     end
   end
 end
